@@ -1,25 +1,35 @@
 package aplicacao;
 
-import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import aplicacao.client.LivrosClient;
+import aplicacao.domain.Livros;
 
 public class Aplicacao {
-	public static void main (String args[]) {
+	public static void main (String args[]) throws ParseException {
 		
-		RestTemplate restTemplate = new RestTemplate();
+		LivrosClient cliente = new LivrosClient();
 		
-		RequestEntity<Void> request = RequestEntity
-				.get(URI.create("http://localhost:8080/livros"))
-				.header("Authorization", "Basic YXJpZWw6czNuaDQ=").build();
-			
-		ResponseEntity<Livros[]> response = restTemplate.exchange(request, Livros[].class);
+		List<Livros> listarLivros = cliente.listar();
 		
-		for(Livros livro : response.getBody()) {
+		for(Livros livro : listarLivros) {
+			System.out.println("");
 			System.out.print("LIVROS: " + livro.getNome());
 		}
+		
+		Livros livro = new Livros();
+		livro.setNome("Aprenda String Boot");
+		livro.setEditora("Ariel Lopes S.A");
+		SimpleDateFormat publicacao = new SimpleDateFormat("dd/MM/yyyy");
+		livro.setPublicacao(publicacao.parse("01/02/2020"));
+		
+		livro.setResumo("Este livro aborda tecnicas de desenvolvimento de APIs.");
+		
+		String localizacao = cliente.salvar(livro);
+		System.out.println("");
+		System.out.println("URI do livro salvo " + localizacao );
 	}
 
 }

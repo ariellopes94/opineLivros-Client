@@ -1,4 +1,4 @@
-package aplicacao;
+package aplicacao.domain;
 
 public class DetalhesErro {
 
