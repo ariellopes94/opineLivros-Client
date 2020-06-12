@@ -10,7 +10,7 @@ import aplicacao.domain.Livros;
 public class Aplicacao {
 	public static void main (String args[]) throws ParseException {
 		
-		LivrosClient cliente = new LivrosClient();
+		LivrosClient cliente = new LivrosClient("http://localhost:8080" , "ariel" , "s3nh4");
 		
 		List<Livros> listarLivros = cliente.listar();
 		
@@ -30,6 +30,10 @@ public class Aplicacao {
 		String localizacao = cliente.salvar(livro);
 		System.out.println("");
 		System.out.println("URI do livro salvo " + localizacao );
+		
+         Livros livroBuscado = cliente.buscar(localizacao);
+         
+         System.out.println("Livro Buscado: " + livroBuscado.getNome());
 	}
 
 }
